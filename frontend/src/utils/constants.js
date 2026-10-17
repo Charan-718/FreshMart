@@ -1,5 +1,6 @@
 // API Endpoints
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const rawApiUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5001/api').trim().replace(/\/+$/, '');
+export const API_BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
 
 export const API_ENDPOINTS = {
   // Auth endpoints
@@ -188,7 +189,7 @@ export const DEFAULT_VALUES = {
   }
 };
 
-export default {
+const constants = {
   API_BASE_URL,
   API_ENDPOINTS,
   PRODUCT_CATEGORIES,
@@ -204,3 +205,5 @@ export default {
   REGEX_PATTERNS,
   DEFAULT_VALUES
 };
+
+export default constants;

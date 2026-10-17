@@ -149,6 +149,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../utils/constants';
 import './ProductDetails.css';
 
 // Sample product data for fallback
@@ -285,7 +286,7 @@ const ProductDetails = () => {
         setError(null);
         
         // Try to fetch from MongoDB API first
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        const response = await fetch(`${API_BASE_URL}/products/${id}`);
         
         if (response.ok) {
           const productData = await response.json();

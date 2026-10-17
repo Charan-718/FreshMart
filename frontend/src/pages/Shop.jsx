@@ -229,6 +229,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../utils/constants';
 import './Shop.css';
 
 // Sample product data structure (fallback data)
@@ -306,7 +307,7 @@ const Shop = () => {
         setLoading(true);
         setError(null);
         
-        const response = await fetch('http://localhost:5000/api/products', {
+        const response = await fetch(`${API_BASE_URL}/products`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

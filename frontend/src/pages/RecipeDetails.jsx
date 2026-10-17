@@ -2,116 +2,118 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './RecipeDetails.css';
 
+// Sample recipe data - in real app, this would come from API
+const sampleRecipes = {
+  1: {
+    id: 1,
+    name: 'Apple Omelette',
+    description: 'A sweet and savory omelette with fresh apples and dairy',
+    cookingTime: 15,
+    difficulty: 'Easy',
+    servings: 2,
+    ingredients: [
+      { name: 'Organic Apples', quantity: '2', unit: 'medium' },
+      { name: 'Eggs', quantity: '4', unit: 'large' },
+      { name: 'Milk', quantity: '1/4', unit: 'cup' },
+      { name: 'Butter', quantity: '2', unit: 'tbsp' },
+      { name: 'Cinnamon', quantity: '1/2', unit: 'tsp' },
+      { name: 'Sugar', quantity: '1', unit: 'tbsp' },
+      { name: 'Salt', quantity: '1/4', unit: 'tsp' },
+      { name: 'Vanilla extract', quantity: '1', unit: 'tsp' }
+    ],
+    instructions: [
+      'Wash and core the apples, then chop them into small pieces.',
+      'In a bowl, whisk together eggs, milk, salt, and vanilla extract until well combined.',
+      'Melt 1 tablespoon of butter in a non-stick skillet over medium heat.',
+      'Add chopped apples and sauté for 3-4 minutes until slightly softened.',
+      'Sprinkle sugar and cinnamon over the apples and cook for another 2 minutes.',
+      'Remove apples from skillet and set aside.',
+      'Add remaining butter to the skillet and pour in the egg mixture.',
+      'Cook for 2-3 minutes until the edges start to set.',
+      'Spread the cooked apples evenly over one half of the omelette.',
+      'Carefully fold the other half over the apples and cook for 1-2 more minutes.',
+      'Slide onto a plate and serve warm.'
+    ],
+    nutrition: {
+      calories: 320,
+      protein: '18g',
+      carbs: '25g',
+      fat: '15g',
+      fiber: '4g',
+      sugar: '18g'
+    },
+    tips: [
+      'Use a non-stick skillet for easy flipping',
+      'Don\'t overcook the eggs - they should be slightly runny when folding',
+      'You can add a sprinkle of cheese for extra flavor',
+      'Serve with toast for a complete breakfast'
+    ],
+    image: '/images/recipe1.jpg',
+    category: 'Breakfast',
+    rating: 4.5,
+    reviews: 128
+  },
+  2: {
+    id: 2,
+    name: 'Fruit Smoothie Bowl',
+    description: 'Refreshing smoothie bowl with apples and yogurt',
+    cookingTime: 5,
+    difficulty: 'Very Easy',
+    servings: 1,
+    ingredients: [
+      { name: 'Organic Apples', quantity: '1', unit: 'large' },
+      { name: 'Milk', quantity: '1/2', unit: 'cup' },
+      { name: 'Yogurt', quantity: '1/2', unit: 'cup' },
+      { name: 'Honey', quantity: '1', unit: 'tbsp' },
+      { name: 'Granola', quantity: '1/4', unit: 'cup' },
+      { name: 'Banana', quantity: '1/2', unit: 'medium' },
+      { name: 'Chia seeds', quantity: '1', unit: 'tsp' }
+    ],
+    instructions: [
+      'Peel and chop the apple and banana into small pieces.',
+      'In a blender, combine apple, banana, milk, yogurt, and honey.',
+      'Blend until smooth and creamy.',
+      'Pour the smoothie into a bowl.',
+      'Top with granola and sprinkle chia seeds on top.',
+      'Add additional fruit slices for decoration if desired.',
+      'Serve immediately and enjoy!'
+    ],
+    nutrition: {
+      calories: 280,
+      protein: '12g',
+      carbs: '45g',
+      fat: '8g',
+      fiber: '6g',
+      sugar: '32g'
+    },
+    tips: [
+      'Use frozen fruits for a thicker consistency',
+      'Add protein powder for an extra protein boost',
+      'Customize toppings with your favorite nuts and seeds',
+      'Best consumed immediately after preparation'
+    ],
+    image: '/images/recipe2.jpg',
+    category: 'Breakfast',
+    rating: 4.3,
+    reviews: 89
+  }
+};
+
 const RecipeDetails = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('instructions');
 
-  // Sample recipe data - in real app, this would come from API
-  const sampleRecipes = {
-    1: {
-      id: 1,
-      name: 'Apple Omelette',
-      description: 'A sweet and savory omelette with fresh apples and dairy',
-      cookingTime: 15,
-      difficulty: 'Easy',
-      servings: 2,
-      ingredients: [
-        { name: 'Organic Apples', quantity: '2', unit: 'medium' },
-        { name: 'Eggs', quantity: '4', unit: 'large' },
-        { name: 'Milk', quantity: '1/4', unit: 'cup' },
-        { name: 'Butter', quantity: '2', unit: 'tbsp' },
-        { name: 'Cinnamon', quantity: '1/2', unit: 'tsp' },
-        { name: 'Sugar', quantity: '1', unit: 'tbsp' },
-        { name: 'Salt', quantity: '1/4', unit: 'tsp' },
-        { name: 'Vanilla extract', quantity: '1', unit: 'tsp' }
-      ],
-      instructions: [
-        'Wash and core the apples, then chop them into small pieces.',
-        'In a bowl, whisk together eggs, milk, salt, and vanilla extract until well combined.',
-        'Melt 1 tablespoon of butter in a non-stick skillet over medium heat.',
-        'Add chopped apples and sauté for 3-4 minutes until slightly softened.',
-        'Sprinkle sugar and cinnamon over the apples and cook for another 2 minutes.',
-        'Remove apples from skillet and set aside.',
-        'Add remaining butter to the skillet and pour in the egg mixture.',
-        'Cook for 2-3 minutes until the edges start to set.',
-        'Spread the cooked apples evenly over one half of the omelette.',
-        'Carefully fold the other half over the apples and cook for 1-2 more minutes.',
-        'Slide onto a plate and serve warm.'
-      ],
-      nutrition: {
-        calories: 320,
-        protein: '18g',
-        carbs: '25g',
-        fat: '15g',
-        fiber: '4g',
-        sugar: '18g'
-      },
-      tips: [
-        'Use a non-stick skillet for easy flipping',
-        'Don\'t overcook the eggs - they should be slightly runny when folding',
-        'You can add a sprinkle of cheese for extra flavor',
-        'Serve with toast for a complete breakfast'
-      ],
-      image: '/images/recipe1.jpg',
-      category: 'Breakfast',
-      rating: 4.5,
-      reviews: 128
-    },
-    2: {
-      id: 2,
-      name: 'Fruit Smoothie Bowl',
-      description: 'Refreshing smoothie bowl with apples and yogurt',
-      cookingTime: 5,
-      difficulty: 'Very Easy',
-      servings: 1,
-      ingredients: [
-        { name: 'Organic Apples', quantity: '1', unit: 'large' },
-        { name: 'Milk', quantity: '1/2', unit: 'cup' },
-        { name: 'Yogurt', quantity: '1/2', unit: 'cup' },
-        { name: 'Honey', quantity: '1', unit: 'tbsp' },
-        { name: 'Granola', quantity: '1/4', unit: 'cup' },
-        { name: 'Banana', quantity: '1/2', unit: 'medium' },
-        { name: 'Chia seeds', quantity: '1', unit: 'tsp' }
-      ],
-      instructions: [
-        'Peel and chop the apple and banana into small pieces.',
-        'In a blender, combine apple, banana, milk, yogurt, and honey.',
-        'Blend until smooth and creamy.',
-        'Pour the smoothie into a bowl.',
-        'Top with granola and sprinkle chia seeds on top.',
-        'Add additional fruit slices for decoration if desired.',
-        'Serve immediately and enjoy!'
-      ],
-      nutrition: {
-        calories: 280,
-        protein: '12g',
-        carbs: '45g',
-        fat: '8g',
-        fiber: '6g',
-        sugar: '32g'
-      },
-      tips: [
-        'Use frozen fruits for a thicker consistency',
-        'Add protein powder for an extra protein boost',
-        'Customize toppings with your favorite nuts and seeds',
-        'Best consumed immediately after preparation'
-      ],
-      image: '/images/recipe2.jpg',
-      category: 'Breakfast',
-      rating: 4.3,
-      reviews: 89
-    }
-  };
-
   useEffect(() => {
     // Simulate API call
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const foundRecipe = sampleRecipes[id];
       setRecipe(foundRecipe);
       setLoading(false);
     }, 500);
+
+    return () => clearTimeout(timer);
   }, [id]);
 
   if (loading) {
