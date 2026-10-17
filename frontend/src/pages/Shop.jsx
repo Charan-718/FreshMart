@@ -298,7 +298,7 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('name');
 
-  const categories = ['all', 'fruits', 'vegetables', 'dairy', 'meat', 'bakery'];
+  const categories = ['all', 'fruits', 'vegetables', 'dairy', 'meat', 'bakery', 'beverages', 'snacks'];
 
   // Fetch products from MongoDB with fallback to sample data
   useEffect(() => {
