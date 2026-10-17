@@ -327,37 +327,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Cart.css';
 
-// Sample cart items for initial setup
-const sampleCartItems = [
-  {
-    id: 1,
-    productId: 1,
-    name: 'Organic Apples',
-    price: 4.99,
-    quantity: 2,
-    image: '/images/apples.jpg',
-    category: 'fruits'
-  },
-  {
-    id: 2,
-    productId: 4,
-    name: 'Milk',
-    price: 3.49,
-    quantity: 1,
-    image: '/images/milk.jpg',
-    category: 'dairy'
-  },
-  {
-    id: 3,
-    productId: 5,
-    name: 'Eggs',
-    price: 4.99,
-    quantity: 1,
-    image: '/images/eggs.jpg',
-    category: 'dairy'
-  }
-];
-
 // localStorage keys
 const CART_STORAGE_KEY = 'grocery_cart_items';
 
@@ -375,14 +344,11 @@ const Cart = () => {
         if (savedCartItems) {
           setCartItems(JSON.parse(savedCartItems));
         } else {
-          // If no items in localStorage, use sample items and save them
-          setCartItems(sampleCartItems);
-          localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(sampleCartItems));
+          setCartItems([]);
         }
       } catch (error) {
         console.error('Error loading cart items from localStorage:', error);
-        // Fallback to sample items if there's an error
-        setCartItems(sampleCartItems);
+        setCartItems([]);
       } finally {
         setIsLoadingCart(false);
       }
